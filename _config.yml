@@ -4,7 +4,7 @@ description: "Spatio-Temporal Forecasting of Dictyostelium discoideum Aggregatio
 author: "David Benson"
 
 # GitHub Pages settings
-baseurl: "/stat4243"  # Repository name for GitHub Pages
+baseurl: "/stat4243_proj2"  # Repository name for GitHub Pages
 url: "https://db-d2.github.io"  # Your GitHub Pages URL
 
 # Theme - using minima or jekyll-theme-cayman for clean documentation look
@@ -30,11 +30,4 @@ nav:
 exclude:
   - Gemfile
   - Gemfile.lock
-  - Data/
-  - Processed_Data/
-  - .ipynb_checkpoints/
-  - do_not_use.txt
-  - project_audit.md
-  - tasks.md
-  - updated_tasks.md
-  - *.bak
+
