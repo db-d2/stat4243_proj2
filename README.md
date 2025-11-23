@@ -2,7 +2,7 @@
 
 **Predicting *Dictyostelium discoideum* Aggregation Centers from Early Video Frames**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/db-d2/stat4243/blob/main/slime_mold_starter.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb)
 
 ## Project Overview
 
@@ -57,11 +57,27 @@ The models were evaluated on the held-out Test Set. The **CNN-LSTM** model achie
 *Table 1: Performance metrics on the Test Set. Lower is better.*
 
 ### Generative Model Performance (DYffusion+Hopfield)
+
 We evaluated an experimental **DYffusion+Hopfield** model that treats the problem as a **dense prediction task** (generating a probability heatmap) rather than regression.
 
-*   **Mean Center-of-Mass Error:** ~60.75 µm
-*   **Localization:** The model successfully localized the aggregation region (error corresponds to ~30 pixels), demonstrating that it learned the spatial structure.
-*   **Precision Trade-off:** While successful at localization, the generative approach lacked the sub-pixel precision of the regression models (CNN-LSTM: ~42.74 µm). This highlights the trade-off between the rich, probabilistic output of generative models and the precise point-estimates of regression models for this specific task.
+#### Quantitative Results
+The experimental "Memory-Augmented Diffusion" model was evaluated using Leave-One-Group-Out Cross-Validation.
+*   **Mean Center-of-Mass Error (CoM):** $\approx 60.75 \mu m$.
+*   **Probabilistic Metrics:** The Negative Log Likelihood (NLL) and Energy Score (CRPS) provide a measure of the model's calibration and uncertainty quantification.
+
+#### Performance Interpretation & Challenges
+The DYffusion model approaches the problem as a **dense prediction task** (heatmap generation) rather than simple regression.
+
+*   **Localization vs. Precision:**
+    *   **Localization:** The model successfully learned to localize the aggregation event. An error of $\approx 60 \mu m$ corresponds to roughly **30 pixels** in our $320 \times 320$ grid. This indicates the model can identify the correct *region* where the mound will form.
+    *   **Precision Limits:** Unlike regression models that output continuous coordinates, the heatmap approach is limited by the grid resolution and the spread ($\sigma$) of the target Gaussian. The "Center of Mass" calculation is also sensitive to background noise in the predicted probability map, which can pull the estimated center away from the true peak.
+
+*   **Robustness:**
+    *   **Temporal:** The robustness analysis shows how the model's error changes as we provide fewer input frames. A flatter curve indicates the model can predict the outcome early in the process.
+    *   **Resolution:** The performance drop at lower resolutions (downsampling factors 2 and 4) highlights the model's dependence on fine-grained spatial features (texture/wavefronts) versus coarse global structure.
+
+#### Conclusion
+The **DYffusion+Hopfield** architecture successfully implements a generative approach to the slime mold prediction problem. By predicting a full probability distribution rather than a single point, it offers a richer output that captures uncertainty. While the absolute precision (in microns) is limited by the heatmap generation process, the model demonstrates the capability to retrieve temporal patterns and localize aggregation events from early video frames.
 
 ### Visualizations
 Below are the predictions on the test set. The Green 'X' is the ground truth aggregation center, and the Red 'O' is the model's prediction.
@@ -79,12 +95,6 @@ We analyzed how model performance degrades with reduced temporal context (fewer 
 
 ![Robustness over Time](Results/Figures/robustness_error_vs_time.png)
 
-### Subsampled Data Analysis
-We observed that the **Hopfield-Attention** model underperformed on temporally subsampled data (`_t_subsampled`).
-- **Cause:** Subsampling results in fewer frames (e.g., 10 instead of 50). Our pipeline pads the remaining 40 frames with zeros.
-- **Issue:** The current attention mechanism lacks a `key_padding_mask`, causing it to attend to the black padding frames, which dilutes the signal from the real data.
-- **Solution:** Future work should implement masking to ignore padded frames or exclude subsampled duplicates from the dataset.
-
 ---
 
 ## Conclusion
@@ -99,13 +109,13 @@ We observed that the **Hopfield-Attention** model underperformed on temporally s
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/db-d2/stat4243.git
-    cd stat4243
+    git clone https://github.com/db-d2/stat4243_proj2.git
+    cd stat4243_proj2
     ```
 
 2.  **Install Dependencies:**
     ```bash
-    pip install torch numpy matplotlib pandas scipy scikit-image tifffile h5py
+    pip install torch numpy matplotlib pandas scipy scikit-image tifffile h5py zarr
     ```
 
 3.  **Run the Notebook:**
@@ -118,10 +128,10 @@ We observed that the **Hopfield-Attention** model underperformed on temporally s
 ## Repository Structure
 
 ```
-stat4243/
+stat4243_proj2/
 ├── slime_mold_starter.ipynb   # Main project notebook (Code)
 ├── Data/                      # Raw input movies (Tiff/Zarr)
-├── Processed_Data/            # Preprocessed .pt tensors
+├── Processed_Data/            # Preprocessed .pt tensors (not in GitHub to save space)
 ├── _config.yml                # GitHub Pages configuration
 ├── index.md                   # Project landing page
 ├── README.md                  # This report

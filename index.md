@@ -7,7 +7,7 @@ title: Home
 
 **Spatio-Temporal Forecasting of *Dictyostelium discoideum* Aggregation Centers using Deep Learning**
 
-[View Code](https://github.com/db-d2/stat4243/blob/main/slime_mold_starter.ipynb) | [Open in Colab](https://colab.research.google.com/github/db-d2/stat4243/blob/main/slime_mold_starter.ipynb) | [Full Report](./README.md)
+[View Code](https://github.com/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb) | [Open in Colab](https://colab.research.google.com/github/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb) | [Full Report](./README.md)
 
 ## Abstract
 
@@ -28,10 +28,17 @@ This project develops and compares deep learning architectures to predict the fi
 
 ## Visualizations
 
-### Prediction Example
+### Regression Model Predictions
 *Models predict the final aggregation center (x, y) based on early video frames. Green 'X' is Ground Truth, Red 'O' is Prediction.*
 
 ![Test Predictions](Results/Figures/test_predictions.png)
+
+### DYffusion+Hopfield: Generative Heatmap Predictions
+*The DYffusion model generates probability heatmaps rather than point coordinates. Green 'X' marks the ground truth center, while the White 'O' shows the predicted center of mass from the heatmap.*
+
+![DYffusion Predictions](Results/Figures/dyffusion_predictions.png)
+
+*The heatmap approach captures spatial uncertainty and offers a richer representation of where aggregation is likely to occur, though at the cost of some coordinate precision compared to regression models.*
 
 *(See the [Full Report](./README.md) for more detailed analysis)*
 
