@@ -1,0 +1,26 @@
+[
+    {
+        "Model": "CNN-LSTM",
+        "Mean Error (Norm)": "0.0184 \u00b1 0.0008",
+        "Mean Error (\u00b5m)": "11.77 \u00b1 0.53",
+        "Res. Robustness Drop (%)": "0.0%"
+    },
+    {
+        "Model": "Tiny3DCNN",
+        "Mean Error (Norm)": "0.0457 \u00b1 0.0009",
+        "Mean Error (\u00b5m)": "29.27 \u00b1 0.59",
+        "Res. Robustness Drop (%)": "4.3%"
+    },
+    {
+        "Model": "LastFrameCNN",
+        "Mean Error (Norm)": "0.0536 \u00b1 0.0008",
+        "Mean Error (\u00b5m)": "34.31 \u00b1 0.53",
+        "Res. Robustness Drop (%)": "0.0%"
+    },
+    {
+        "Model": "Hopfield-Attn",
+        "Mean Error (Norm)": "0.0713 \u00b1 0.0133",
+        "Mean Error (\u00b5m)": "45.62 \u00b1 8.53",
+        "Res. Robustness Drop (%)": "37.4%"
+    }
+]

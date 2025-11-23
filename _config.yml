@@ -1,0 +1,40 @@
+# Jekyll configuration for GitHub Pages
+title: "Slime Mold Aggregation Prediction"
+description: "Spatio-Temporal Forecasting of Dictyostelium discoideum Aggregation Centers using Deep Learning (CNN-LSTM, 3DCNN, Hopfield-Attention)."
+author: "David Benson"
+
+# GitHub Pages settings
+baseurl: "/stat4243"  # Repository name for GitHub Pages
+url: "https://db-d2.github.io"  # Your GitHub Pages URL
+
+# Theme - using minima or jekyll-theme-cayman for clean documentation look
+theme: jekyll-theme-cayman
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Kramdown settings for better math support
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
+# Navigation
+nav:
+  - title: "Home"
+    url: "/"
+  - title: "Report"
+    url: "/README.md"
+
+# Exclude files from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - Data/
+  - Processed_Data/
+  - .ipynb_checkpoints/
+  - do_not_use.txt
+  - project_audit.md
+  - tasks.md
+  - updated_tasks.md
+  - *.bak

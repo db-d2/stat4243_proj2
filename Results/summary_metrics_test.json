@@ -1,0 +1,30 @@
+[
+    {
+        "Model": "CNN-LSTM",
+        "Val Error (Norm)": "0.0184",
+        "Test Error (Norm)": "0.0668 \u00b1 0.0019",
+        "Test Error (\u00b5m)": "42.74 \u00b1 1.21",
+        "Overfit Gap": "0.0484"
+    },
+    {
+        "Model": "Tiny3DCNN",
+        "Val Error (Norm)": "0.0457",
+        "Test Error (Norm)": "0.0723 \u00b1 0.0068",
+        "Test Error (\u00b5m)": "46.26 \u00b1 4.38",
+        "Overfit Gap": "0.0265"
+    },
+    {
+        "Model": "LastFrameCNN",
+        "Val Error (Norm)": "0.0536",
+        "Test Error (Norm)": "0.0716 \u00b1 0.0073",
+        "Test Error (\u00b5m)": "45.82 \u00b1 4.70",
+        "Overfit Gap": "0.0180"
+    },
+    {
+        "Model": "Hopfield-Attn",
+        "Val Error (Norm)": "0.0713",
+        "Test Error (Norm)": "0.0697 \u00b1 0.0051",
+        "Test Error (\u00b5m)": "44.62 \u00b1 3.26",
+        "Overfit Gap": "-0.0016"
+    }
+]
