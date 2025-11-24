@@ -7,7 +7,7 @@ title: Home
 
 **Spatio-Temporal Forecasting of *Dictyostelium discoideum* Aggregation Centers using Deep Learning**
 
-[View Code](https://github.com/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb) | [Open in Colab](https://colab.research.google.com/github/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb) | [Full Report](./README.md)
+[View Code](https://github.com/db-d2/stat4243_proj2/blob/main/slime_mold_local.ipynb) | [Open in Colab](https://colab.research.google.com/github/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb) | [Full Report](./README.md)
 
 ## Abstract
 
