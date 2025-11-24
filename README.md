@@ -2,7 +2,7 @@
 
 **Predicting *Dictyostelium discoideum* Aggregation Centers from Early Video Frames**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/db-d2/stat4243/blob/main/slime_mold_starter.ipynb)
 
 ## Project Overview
 
@@ -97,6 +97,47 @@ We analyzed how model performance degrades with reduced temporal context (fewer 
 
 ---
 
+## Experiment Log: Normalization & Augmentation Strategies
+
+### 1. Normalization
+We experimented with **Robust Intensity Normalization** (Percentile Clipping) to address the issue of low-contrast/black images in certain experiments (e.g., `mixin64`).
+*   **Method:** Clipping pixel intensities to the 1st and 99th percentiles before scaling to [0, 1] (Caicedo et al., 2017).
+*   **Result:** While this successfully improved the visual contrast of the images, it resulted in a **higher Mean Distance Error** during Cross-Validation compared to standard Min-Max normalization.
+*   **Decision:** We have reverted the pipeline to use **Min-Max Normalization** to prioritize predictive performance, accepting that some outlier movies may appear visually dark in QC plots.
+
+### 2. Spatio-Temporal Augmentation
+We implemented **Tube Masking** (a variant of VideoMAE / Spatial Dropout) to improve model robustness.
+*   **Method:** For every augmented sample, we generate a duplicate version where a random rectangular region (20-50% of the image) is masked out (set to zero) across all time steps.
+*   **Goal:** This forces the model to learn from the distributed "wave" patterns of the slime mold aggregation rather than relying on a single bright spot or local feature.
+*   **Impact:** This effectively doubles the training dataset size and acts as a strong regularizer against overfitting to specific background artifacts.
+
+### 3. Evaluation Methodology Update
+*   **Clean Evaluation:** We updated the data loader logic (`create_split_loaders`) to **filter out Tube Masked samples** from the Validation and Test sets. This ensures that our reported metrics reflect performance on real, clean biological images, while the model still benefits from the masked data during training.
+*   **Early Phase Analysis:** We added a specific evaluation block to compare model performance on the first 25 frames (approx. 2 hours). This helps distinguish models that learn temporal dynamics from baselines (like `LastFrameCNN`) that rely on seeing the final formed structure.
+*   **Metrics:** We added "Spatial Quality" (normalized accuracy) and "Convergence Slope" (error reduction over time) to better characterize model behavior beyond simple MSE.
+
+### 4. Feature Engineering: Sobel Edges
+*   **Implementation:** We added a **Sobel Edge Detection** channel to the input tensors.
+*   **Method:** For each frame, we compute the Sobel gradient magnitude (normalized) and stack it with the original grayscale image.
+*   **Input Shape:** The model input shape changed from `(B, T, 1, H, W)` to `(B, T, 2, H, W)`.
+*   **Hypothesis:** Explicitly providing edge information should help the CNNs detect the faint wavefronts of cAMP signaling, which appear as subtle texture changes, potentially improving performance on low-contrast samples.
+
+### 5. Recent Updates (Loss & Resolution)
+*   **Loss Function:** Switched from `MSELoss` to `nn.HuberLoss(delta=0.1)`.
+    *   **Reason:** MSE is highly sensitive to outliers. In early training, some predictions might be wildly off, causing large gradients that destabilize the LSTM. Huber loss acts like MSE near 0 but like L1 (linear) for large errors, providing a robust middle ground.
+*   **Resolution Increase:** Updated `TARGET_SIZE` from 256x256 to **320x320**.
+    *   **Reason:** The aggregation centers are often small, subtle features. Increasing the spatial resolution preserves fine-grained texture details (wavefronts) that might be lost at lower resolutions, potentially improving the model's ability to pinpoint the exact center.
+
+### 6. Critical Review of Potential Flaws
+We have identified and addressed the following potential flaws in our pipeline:
+*   **Data Leakage:** Addressed by splitting strictly by Experiment ID (LOGO-CV) rather than by file.
+*   **Evaluation Contamination:** Addressed by filtering masked data from Test sets.
+*   **Normalization Artifacts:** Addressed by reverting to Min-Max normalization after empirical testing.
+*   **Metric Blindness:** Addressed by adding Early Phase and Convergence Slope metrics to detect if models are just memorizing the final frame.
+*   **Resolution Bias:** We explicitly test resolution robustness. If all models show identical drops, it suggests the task is highly dependent on fine-grained texture (or conversely, that the downsampling method is too aggressive/uniform).
+
+---
+
 ## Conclusion
 
 1.  **Best Generalization:** The **CNN-LSTM** model achieved the best performance on the test set with an error of **42.74 µm**, slightly outperforming the Hopfield-Attention model (44.62 µm).
@@ -110,12 +151,12 @@ We analyzed how model performance degrades with reduced temporal context (fewer 
 1.  **Clone the Repository:**
     ```bash
     git clone https://github.com/db-d2/stat4243_proj2.git
-    cd stat4243_proj2
+    cd stat4243
     ```
 
 2.  **Install Dependencies:**
     ```bash
-    pip install torch numpy matplotlib pandas scipy scikit-image tifffile h5py zarr
+    pip install torch numpy matplotlib pandas scipy scikit-image tifffile h5py
     ```
 
 3.  **Run the Notebook:**
@@ -128,10 +169,10 @@ We analyzed how model performance degrades with reduced temporal context (fewer 
 ## Repository Structure
 
 ```
-stat4243_proj2/
+stat4243/
 ├── slime_mold_starter.ipynb   # Main project notebook (Code)
 ├── Data/                      # Raw input movies (Tiff/Zarr)
-├── Processed_Data/            # Preprocessed .pt tensors (not in GitHub to save space)
+├── Processed_Data/            # Preprocessed .pt tensors
 ├── _config.yml                # GitHub Pages configuration
 ├── index.md                   # Project landing page
 ├── README.md                  # This report
