@@ -7,7 +7,7 @@ title: Home
 
 **Spatio-Temporal Forecasting of *Dictyostelium discoideum* Aggregation Centers using Deep Learning**
 
-[View Code](https://github.com/db-d2/stat4243_proj2/blob/main/slime_mold_local.ipynb) | [Open in Colab](https://colab.research.google.com/github/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb) | [Full Report](./README.md)
+[View Code](https://github.com/db-d2/stat4243_proj2/blob/main/slime_mold_local.ipynb) | [Open in Colab](https://colab.research.google.com/github/db-d2/stat4243_proj2/blob/main/slime_mold_starter.ipynb) | [Full Report](https://github.com/db-d2/stat4243_proj2/blob/main/README.md)
 
 ## Abstract
 
@@ -40,11 +40,11 @@ This project develops and compares deep learning architectures to predict the fi
 
 *The heatmap approach captures spatial uncertainty and offers a richer representation of where aggregation is likely to occur, though at the cost of some coordinate precision compared to regression models.*
 
-*(See the [Full Report](./README.md) for more detailed analysis)*
+*(See the [Full Report](https://github.com/db-d2/stat4243_proj2/blob/main/README.md) for more detailed analysis)*
 
 ## Documentation
 
-**Technical Report**: [View README](./README.md)
+**Technical Report**: [View README](https://github.com/db-d2/stat4243_proj2/blob/main/README.md)
 
 Contains the complete project writeup, including:
 - Detailed Problem Statement & Approach
